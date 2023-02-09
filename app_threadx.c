@@ -32,8 +32,13 @@ extern UART_HandleTypeDef huart1;
 TX_THREAD ThreadOne;
 TX_THREAD ThreadTwo;
 TX_QUEUE queue_0;
+TX_TIMER Timerone;
+TX_TIMER Timertwo;
+TX_TIMER Timerthree;
 extern volatile uint8_t flag;
-
+VOID timerCB1(ulong);
+VOID timerCB2(ulong);
+VOID timerCB3(ulong);
 
 char str1[1000]="thread green.\n\r";
 char str2[1000]="Thread red\n\r";
@@ -60,6 +65,7 @@ char str2[1000]="Thread red\n\r";
 void ThreadOne_Entry(ULONG thread_input);
 void ThreadTwo_Entry(ULONG thread_input);
 void App_Delay(uint32_t Delay);
+
 /* USER CODE END PFP */
 
 /**
@@ -126,6 +132,21 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
           ret = TX_QUEUE_ERROR;
         }
 
+    if(tx_timer_create(&Timerone,"timer one",timerCB1,1,100,100,TX_AUTO_ACTIVATE))
+         {
+       	  ret = TX_THREAD_ERROR;
+         }
+
+    if(tx_timer_create(&Timertwo,"timer two",timerCB2,1,100,100,TX_AUTO_ACTIVATE))
+             {
+           	  ret = TX_THREAD_ERROR;
+             }
+
+    if(tx_timer_create(&Timerthree,"timer three",timerCB3,1,100,100,TX_AUTO_ACTIVATE))
+             {
+           	  ret = TX_THREAD_ERROR;
+             }
+
     return ret;
 }
 
@@ -148,6 +169,21 @@ void MX_ThreadX_Init(void)
 }
 
 /* USER CODE BEGIN 1 */
+
+void timerCB1(ulong)
+{
+	HAL_UART_Transmit(&huart1, (uint8_t*)"\n\r !!!!!!!!!!! timer1 expired !!!!!!!!\n\r", 43, 100);
+}
+
+void timerCB2(ulong)
+{
+	HAL_UART_Transmit(&huart1, (uint8_t*)"\n\r !!!!!!!!!!! timer2 expired !!!!!!!!\n\r", 43, 100);
+}
+
+void timerCB3(ulong)
+{
+	HAL_UART_Transmit(&huart1, (uint8_t*)"\n\r !!!!!!!!!!! timer3 expired !!!!!!!!\n\r", 43, 100);
+}
 /**
   * @brief  Function implementing the ThreadOne thread.
   * @param  thread_input: Not used
@@ -172,7 +208,7 @@ void ThreadOne_Entry(ULONG thread_input)
     //}
  // }
 
-	uint8_t msg[100]="\n\r welcome";
+	/*uint8_t msg[100]="\n\r welcome";
 	UINT status;
 	while(1)
 	{
@@ -187,13 +223,13 @@ void ThreadOne_Entry(ULONG thread_input)
 		{
 			HAL_UART_Transmit(&huart1,"\n\r.......Thread 1 failed tosend msg into queue........\n\r", 52, 100);
 		}
-	}
+	}*/
 
 }
 
 void ThreadTwo_Entry(ULONG thread_input)
 {
-	uint8_t msg_rx[100]="\n\r temp data";
+	/*uint8_t msg_rx[100]="\n\r temp data";
 	UINT status;
 	while(1)
 	{
@@ -205,7 +241,7 @@ void ThreadTwo_Entry(ULONG thread_input)
 			HAL_UART_Transmit(&huart1,msg_rx, 100, 100);
 		}
 
-	}
+	}*/
 }
 
 /**

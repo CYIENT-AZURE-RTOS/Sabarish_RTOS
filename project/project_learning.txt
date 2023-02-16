@@ -1,0 +1,8 @@
+1.Created threads for below functionaliteies,
+temperature and accelometer data reading,
+timer utility
+abnormality detection in temperature and accelometer
+external input value for data display.
+2.created semaphore for each thread to store the data into buffer variable then release semaphore
+3.copy the datas into buffer once faced abnormality considering semaphore.
+4.retrieve the data from memory block once recieved external input considering semaphore.
